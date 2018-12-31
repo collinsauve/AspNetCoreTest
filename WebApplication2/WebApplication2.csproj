@@ -13,4 +13,11 @@
     <PackageReference Include="SharpYaml" Version="1.6.4" />
   </ItemGroup>
 
+  <!-- Remove files from copy local that would not be published as they are provided by the platform package -->
+  <Target Name="FilterCopyLocal" DependsOnTargets="RunResolvePublishAssemblies" BeforeTargets="ResolveLockFileCopyLocalProjectDeps">
+    <ItemGroup>
+      <_CopyLocalButNotPublished Include="@(AllCopyLocalItems)" Exclude="@(ResolvedAssembliesToPublish)" />
+      <AllCopyLocalItems Remove="@(_CopyLocalButNotPublished)" />
+    </ItemGroup>
+  </Target>
 </Project>
